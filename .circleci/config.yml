@@ -120,7 +120,10 @@ jobs:
             - "release-notes.md"
       - store_artifacts:
           path: dist
-
+      - run:
+          name: "Publish Release on Github"
+          command: |
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -b "$(< ./dist/release-notes.md)" -c ${CIRCLE_SHA1} -n ${CIRCLE_TAG} -delete ${CIRCLE_TAG} dist/*.tar.gz
   deploy-ci:
     docker:
       - image: circleci/python:2.7
