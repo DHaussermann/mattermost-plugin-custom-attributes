@@ -2,9 +2,9 @@ version: 2.1
 
 description: |
   Stuff to do CI for mattermost plugins
-# orbs:
-#  aws-s3: circleci/aws-s3@1.0.9
-#  codecov: codecov/codecov@1.0.5
+ orbs:
+  aws-s3: circleci/aws-s3@1.0.9
+  codecov: codecov/codecov@1.0.5
 
 executors:
   default:
