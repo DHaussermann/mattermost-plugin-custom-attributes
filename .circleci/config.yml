@@ -2,7 +2,7 @@ version: 2.1
 
 description: |
   Stuff to do CI for mattermost plugins
- orbs:
+orbs:
   aws-s3: circleci/aws-s3@1.0.9
   codecov: codecov/codecov@1.0.5
 
@@ -157,3 +157,4 @@ jobs:
           name: "Publish Release on Github"
           command: |
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -b "$(< ./dist/release-notes.md)" -c ${CIRCLE_SHA1} -n ${CIRCLE_TAG} -delete ${CIRCLE_TAG} dist/*.tar.gz
+© 2020 GitHub, Inc.
