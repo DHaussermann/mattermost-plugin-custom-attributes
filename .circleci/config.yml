@@ -149,13 +149,14 @@ jobs:
 
   deploy-release-github:
     docker:
-      - image: cibuilds/github:0.12
+      - image: cibuilds/github:0.13
     steps:
       - attach_workspace:
           at: dist
       - run:
           name: "Publish Release on Github"
           command: |
+            cat ./dist/release-notes.md
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -b "$(< ./dist/release-notes.md)" -c ${CIRCLE_SHA1} -n ${CIRCLE_TAG} -delete ${CIRCLE_TAG} dist/*.tar.gz
  
 workflows:
