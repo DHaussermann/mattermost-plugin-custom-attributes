@@ -180,7 +180,6 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-          context: matterbuild-github-token
           requires:
             - lint
             - coverage
