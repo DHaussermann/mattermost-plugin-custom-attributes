@@ -2,6 +2,7 @@ version: 2.1
 
 description: |
   Stuff to do CI for mattermost plugins
+
 orbs:
   aws-s3: circleci/aws-s3@1.0.9
   codecov: codecov/codecov@1.0.5
@@ -9,7 +10,7 @@ orbs:
 executors:
   default:
     docker:
-      - image: circleci/golang:1.13-node
+      - image: circleci/golang:1.14.1-node
 
 commands:
   deploy:
@@ -29,7 +30,7 @@ commands:
     parameters:
       version:
         type: string
-        default: 1.21.0
+        default: 1.24.0
       gobin:
         type: string
         default: /go/bin
@@ -71,7 +72,9 @@ jobs:
       - checkout
       - install-golangci-lint
       - *restore_cache
-      - run: make check-style
+      - run:
+          name: Checking code style
+          command: make check-style
       - *save_cache
 
   test:
@@ -94,7 +97,7 @@ jobs:
           command: make coverage
       - *save_cache
       - codecov/upload:
-        file:  server/coverage.txt
+        file: server/coverage.txt
 
   build:
     executor:
@@ -102,9 +105,11 @@ jobs:
     steps:
       - checkout
       - *restore_cache
-      - run: make dist
       - run:
-          name: "Generating release notes"
+          name: Build Plugin Bundle
+          command: make dist
+      - run:
+          name: Generating Release Notes
           command: |
             printf "Supported Mattermost Server Versions: **$(cat plugin.json | jq .min_server_version -r)+** \n## Enhancements\n\n## Fixes\n"  >> dist/release-notes.md
             if [[ $(git tag -l | wc -l) -eq 1 ]]; then
@@ -156,7 +161,6 @@ jobs:
       - run:
           name: "Publish Release on Github"
           command: |
-            cat ./dist/release-notes.md
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -b "$(< ./dist/release-notes.md)" -c ${CIRCLE_SHA1} -n ${CIRCLE_TAG} -delete ${CIRCLE_TAG} dist/*.tar.gz
  
 workflows:
