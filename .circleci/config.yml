@@ -1,11 +1,12 @@
 version: 2.1
-
+  
 description: |
   Stuff to do CI for mattermost plugins
 
 orbs:
   aws-s3: circleci/aws-s3@1.0.9
   codecov: codecov/codecov@1.0.5
+  mattermost-plugin-notify: nathanaelhoun/mattermost-plugin-notify@1.2.0
 
 executors:
   default:
@@ -131,6 +132,10 @@ jobs:
             - "release-notes.md"
       - store_artifacts:
           path: dist
+      - mattermost-plugin-notify/status:
+          failure_message: This very important job has failed! Ping @senior-developer
+          success_message: 'Life is beautiful, my job has succeeded!'
+          webhook: https://dkh-sandbox.test.mattermost.cloud/plugins/com.github.nathanaelhoun.plugin-circleci/hooks/jvHVYK4lKthVNhRKhBPMgYFTtFytwspq 
 
   deploy-ci:
     docker:
