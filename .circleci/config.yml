@@ -131,7 +131,7 @@ jobs:
             - "*.tar.gz"
             - "release-notes.md"
       - store_artifacts:
-          path: pony-dist
+          path:
       - mattermost-plugin-notify/status:
           failure_message: This very important job has failed! Ping @senior-developer
           success_message: 'Life is beautiful, my job has succeeded!'
